@@ -5,29 +5,36 @@
     <title>Multiple Choice Question</title> 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap');
-        html {
+        html, body {
             height: 100%;
+            margin: 0;
         }
         body {
             font-family: 'Metropolis', sans-serif;
             background-color: #000000;
             color: #F7F7F7;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            margin: 0;
-            height: 100%;
         }
 
         #content {
-            height: 100%;
+            width: 100%;
+            max-width: 800px;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+            margin: 0;
         }
 
         .question-container {
             text-align: center;
-            margin: 1rem;
             margin-bottom: 1rem;
-            height: 90%;
+            padding: 20px;
         }
 
         .button-grid {
@@ -35,36 +42,42 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-top: 20px;
-            height: 80%;
-            margin-bottom: 1rem;
         }
 
         button {
             font-family: 'Metropolis', sans-serif;
             padding: 0.5rem 1rem;
-            font-size: 1.25rem;
+            font-size: calc(1vw + 0.7rem); /* Adjust font size to be more responsive */
             cursor: pointer;
             border: none;
             border-radius: 5px;
             background-color: #f0f0f0;
             transition: background-color 0.3s;
+            width: 100%;
         }
 
         button:hover {
             background-color: #843910;
             color: white;
-            border-color: #f0f0f0;
         }
+
         footer {
-            margin: 0;
-            padding: 0;
             background-color: #843910;
-            margin-top: 2rem;
-            font-size: 0.75rem;
+            color: #F7F7F7;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.5rem 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: rgba(224, 189, 153, 1);
+            font-weight: 700;
         }
 
         footer img {
-            width: 0.5rem;
+            width: 1rem;
+            vertical-align: middle;
         }
 
     </style>
@@ -80,28 +93,29 @@
                 <button onclick="checkAnswer('No hazard', this)">No hazard</button>
             </div>
         </div>
-        <footer style="background-color: rgba(247, 247, 247, 0.2); margin: 0; padding: 0.5em 1em; color: #F7F7F7; border-radius: 0;">See more at  <a href="https://pnnl.sharepoint.com/sites/Safety/SitePages/We-are-Safe.aspx?q_scout=WE%20are%20Safe" style="color: rgba(224, 189, 153, 1); font-weight: 700;"> <img class="filetype-icon" style="filter: invert(90%) sepia(7%) saturate(2015%) hue-rotate(327deg) brightness(91%) contrast(92%);" src="https://api.pnl.gov/it/theme-core/v1/svg-icons/link?iconDisplay=solid" alt="pdf-icon">WE are Safe</a></footer>
     </div>
+    <footer>
+        See more at  
+        <a href="https://pnnl.sharepoint.com/sites/Safety/SitePages/We-are-Safe.aspx?q_scout=WE%20are%20Safe">
+            <img class="filetype-icon" style="filter: invert(90%) sepia(7%) saturate(2015%) hue-rotate(327deg) brightness(91%) contrast(92%);" src="https://api.pnl.gov/it/theme-core/v1/svg-icons/link?iconDisplay=solid" alt="pdf-icon">
+            WE are Safe
+        </a>
+    </footer>
 
     <script>
         function makeKeyPointsList(str) {
             var sentences = str.split(".");
             var liElementsHTML = sentences.map(sentence => {
-                if (sentence.trim() != '') {
-                  return "<li>" + sentence.trim() + "</li>";
+                if (sentence.trim() !== '') {
+                    return "<li>" + sentence.trim() + "</li>";
                 }
-              });
+            });
 
-              var liElementsHTMLJoined = liElementsHTML.join("");
-            
-              //var ulHTML = "<ul>" + liElementsHTMLJoined + "</ul>";
-              return liElementsHTMLJoined;
-            
-          }
+            return liElementsHTML.join("");
+        }
 
-        //Adds the optional HDI section. Leave hdi_link blank to exclude this section
         function makeHDILink(hdi_link) {
-            if(hdi_link == "") {
+            if(hdi_link === "") {
                 return "";
             }
             var btn = `
@@ -115,161 +129,62 @@
               </div>
             `;
             return btn;            
-          }
-        function checkAnswer(answer, button) {
-            button.style.backgroundColor = "red";
-            if (answer === 'Grinder is missing its guard') {
-                hazard_header = "Correct: This is a Hazard!";
-                hazard_sub_header = "A grinder is missing its guard!";
-                hazard_desc = "A grinder is missing its safety guard, significantly increasing the risk of injury from flying debris or accidental contact with moving parts.";
-                key_points = "Install and maintain safety guards on grinders and all equipment requiring protective barriers.Conduct regular equipment checks to ensure all safety features are intact and functional.Educate staff on the importance of using equipment with all safety guards fitted and operational.";
-                hdi_link = "https://scout.pnnl.gov/answer/205/how-do-i-hdi/";
-                document.getElementById('content').innerHTML = `
-                    <div class="hazard_header">
-                        <h1>⚠️ <u>${hazard_header}</u> ⚠️</h1>
-                    </div>
-                    <div class="hazard_info">
-                        <h3>${hazard_sub_header}</h3>
-                        <blockquote>${hazard_desc}</blockquote>
-                    </div>
-                    <div class="hdi">
-                        ${makeHDILink(hdi_link)}
-                    </div>
-                    <div class="key_points">
-                        <h3>Safety Tips:</h3>
-                        <ul>${makeKeyPointsList(key_points)}</ul>
-                    </div>
-
-                    <footer style="background-color: rgba(247, 247, 247, 0.2); margin: 0; padding: 0.5em 1em; color: #F7F7F7; border-radius: 0;">See more at  <a href="https://pnnl.sharepoint.com/sites/Safety/SitePages/We-are-Safe.aspx?q_scout=WE%20are%20Safe" style="color: rgba(224, 189, 153, 1); font-weight: 700;"> <img class="filetype-icon" style="filter: invert(90%) sepia(7%) saturate(2015%) hue-rotate(327deg) brightness(91%) contrast(92%);" src="https://api.pnl.gov/it/theme-core/v1/svg-icons/link?iconDisplay=solid" alt="pdf-icon">WE are Safe</a></footer>
-                    <style>
-
-                    .hazard_header h1{
-                        margin: 1rem 0;
-                        font-size: 24px;
-                    }
-
-                    .hazard_header {
-                        justify-self: center;
-                    }
-
-
-                    .hazard_info h3{
-                        padding-left: 0.5rem;
-                        font-size: 18px;
-                        margin-bottom: 0.75rem;
-                    }
-
-                    blockquote {
-                        margin:0rem 0.5rem;
-                        margin-bottom: 0.5rem;
-                        font-weight: 400;
-                        font-size: 14px;
-                    }
-
-                    .key_points {
-                        margin-bottom: 2rem;
-                    }
-
-                    .key_points h3 {
-                        padding-left: 0.5rem;
-                        font-size: 18px;
-                        margin-top: 1rem;
-                        margin-bottom: 0.25rem;
-                    }
-
-                    .key_points li {
-                        font-weight: 400;
-                        font-size: 14px;
-                    }
-                    .tabs {
-                        display: flex;
-                        align-items:center;
-                        list-style: none;
-                        padding: 0;
-                        margin: 0;
-                        font-size: 1.1em;
-                        background-color: rgba(232, 232, 232, 0.2);
-                    }
-
-                    .tab > label {
-                        display: block;
-                        margin-bottom: -1px;
-                        padding: .5em .6em;
-                        background: rgba(232, 232, 232, 0.1);
-                    }
-                    .tab:hover > label {
-                        background: #444;
-                        cursor: pointer;
-                    }
-                    
-                    footer {
-                        margin: 0;
-                        padding: 0;
-                        background-color: #843910;
-                    }
-
-                    footer img {
-                        width: 1rem;
-                    }
-
-                    @import url('https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap');
-
-
-                    .hazard_header {
-                        display: flex;
-                        justify-content: space-between;
-                        font-size: 1.1em;
-                    }
-
-                    .hazard_header h1 {
-                        font-family: 'Metropolis', sans-serif;
-                        font-size: 24px;
-                        font-weight: 700;
-                        display: inline;
-                    }
-
-                    .hazard_header > span {
-                        display: block;
-                        margin: 1em;
-                    }
-
-                    .button-row {
-                        display: flex;
-                        height: 50%;
-                        align-items:flex-end;
-                    }
-                    .button-row .file-links {
-                        padding: 0px;
-                        margin: 0;
-                    }
-
-                    .hdi {
-                        margin-bottom: 1.5rem;
-                        margin-top: 1.5rem;
-                    }
-
-                    a.hdi-link {
-                        font-family: 'Metropolis', sans-serif;
-                        text-decoration: none;
-                        margin-left: 0.5rem;
-                        
-                        background-color: rgba(232, 232, 232, 0.2);
-                        padding: 8px 15px;
-                        color: rgba(202, 202, 202, 1);
-                        font-weight: 500;
-                        font-size: 0.75rem;
-                        border-radius: 5px;
-                    }
-
-                    img.filetype-icon {
-                        height: 2ex;
-                        filter: invert(100%);
-                    }
-                `;
-            } else {
-                alert("Try Again!");
-            }
         }
+          
+        function checkAnswer(answer, button) {
+        button.style.backgroundColor = "red";
+        if (answer === 'Grinder is missing its guard') {
+            var hazard_header = "Correct: This is a Hazard!";
+            var hazard_sub_header = "A grinder is missing its guard!";
+            var hazard_desc = "A grinder is missing its safety guard, significantly increasing the risk of injury from flying debris or accidental contact with moving parts.";
+            var key_points = "Install and maintain safety guards on grinders and all equipment requiring protective barriers. Conduct regular equipment checks to ensure all safety features are intact and functional. Educate staff on the importance of using equipment with all safety guards fitted and operational.";
+            var hdi_link = "https://scout.pnnl.gov/answer/205/how-do-i-hdi/";
+
+            document.getElementById('content').innerHTML = `
+                <div class="hazard_header" style="padding: 0; margin: 0; width: 100%;">
+                    <h1 style="
+                        font-size: calc(1.5vw + 1rem); 
+                        white-space: nowrap; 
+                        background-color: rgba(255, 255, 255, 0.1);
+                        padding: 0.75rem;
+                        text-align: center;
+                        margin: 0;
+                    ">⚠️ Correct: This is a <span style="color:orange"><u>Hazard!</u></span> ⚠️</h1>
+                </div>
+                <div class="hazard_info" style="
+                    border-radius: 8px; 
+                    margin: 0;
+                    text-align: left;
+                    padding: 0px 20px;
+                ">
+                    <h3 style="
+                        font-size: calc(1vw + 1rem); 
+                        color: #F7F7F7;
+                        margin-bottom: 10px;
+                    ">${hazard_sub_header}</h3>
+                    <blockquote style="
+                        font-size: calc(1vw + 0.6rem); 
+                        color: #F7F7F7; 
+                        line-height: 1.4em;
+                        margin-left: 2em;
+                        margin-bottom: 0;
+                    ">${hazard_desc}</blockquote>
+                </div>
+                <div class="key_points" style="margin: 0; padding: 0px 20px; text-align: left;">
+                    <h3 style="
+                        font-size: calc(1vw + 1rem); 
+                        color: #F7F7F7;
+                        margin-bottom: 10px;
+                    ">Safety Tips:</h3>
+                    <ul style="list-style-type: disc; margin-left: 0; font-size: calc(1vw + 0.6rem);">
+                        ${makeKeyPointsList(key_points)}
+                    </ul>
+                </div>
+            `;
+        } else {
+            alert("Try Again!");
+        }
+    }
     </script>
 
 </body>
