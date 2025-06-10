@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-Select Question</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap');
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: 'Metropolis', sans-serif;
+            background-color: #000000;
+            color: #F7F7F7;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #content {
+            width: 100%;
+            max-width: 800px;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .question-container {
+            text-align: center;
+            margin-bottom: 1rem;
+            padding: 20px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            font-family: 'Metropolis', sans-serif;
+            padding: 0.5rem 1rem;
+            font-size: calc(1vw + 0.7rem); 
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #843910;
+            color: white;
+        }
+
+        .check-answer-btn {
+            margin-top: 20px;
+            background-color: #843910;
+            color: white;
+            font-family: 'Metropolis', sans-serif;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: calc(1vw + 0.7rem);
+        }
+        footer {
+            background-color: #843910;
+            color: #F7F7F7;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.5rem 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: rgba(224, 189, 153, 1);
+            font-weight: 700;
+        }
+
+        footer img {
+            width: 1rem;
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div class="question-container">
+            <h2>Identify all hazards found on this cabinet:</h2>
+            <div class="button-grid">
+                <button onclick="toggleSelection(this)" data-answer="Damaged PPE">Damaged PPE</button>
+                <button onclick="toggleSelection(this)" data-answer="Messy papers">Messy papers</button>
+                <button onclick="toggleSelection(this)" data-answer="Chemicals brought from lab">Chemicals brought from lab</button>
+                <button onclick="toggleSelection(this)" data-answer="Printer on cabinet">Printer on cabinet</button>
+            </div>
+            <button class="check-answer-btn" onclick="checkAnswers()">Check Answers</button>
+        </div>
+    </div>
+    <footer>
+        See more at  
+        <a href="https://pnnl.sharepoint.com/sites/Safety/SitePages/We-are-Safe.aspx?q_scout=WE%20are%20Safe">
+            <img class="filetype-icon" style="filter: invert(90%) sepia(7%) saturate(2015%) hue-rotate(327deg) brightness(91%) contrast(92%);" src="https://api.pnl.gov/it/theme-core/v1/svg-icons/link?iconDisplay=solid" alt="pdf-icon">
+            WE are Safe
+        </a>
+    </footer>
+
+    <script>
+        const correctAnswers = new Set(["Damaged PPE", "Messy papers", "Chemicals brought from lab"]);
+        const selectedAnswers = new Set();
+
+        function toggleSelection(button) {
+            const answer = button.getAttribute('data-answer');
+            if (selectedAnswers.has(answer)) {
+                selectedAnswers.delete(answer);
+                button.style.backgroundColor = '#f0f0f0';
+            } else {
+                selectedAnswers.add(answer);
+                button.style.backgroundColor = '#843910';
+            }
+        }
+
+        function makeKeyPointsList(str) {
+            var sentences = str.split(".");
+            var liElementsHTML = sentences.map(sentence => {
+                if (sentence.trim() !== '') {
+                    return "<li>" + sentence.trim() + "</li>";
+                }
+            });
+
+            return liElementsHTML.join("");
+        }
+
+        function makeHDILink(hdi_link) {
+            if(hdi_link === "") {
+                return "";
+            }
+            var btn = `
+            <div class="button-row">
+                <div class="file-links">
+                  <a class="hdi-link" href=${hdi_link}>
+                    <img class="filetype-icon" src="https://api.pnl.gov/it/theme-core/v1/svg-icons/link?iconDisplay=outline" alt="pdf-icon" />
+                    View Associated HDI Page
+                  </a>
+                </div>
+              </div>
+            `;
+            return btn;            
+        }
+          
+        function checkAnswers() {
+            if (selectedAnswers.size === correctAnswers.size && [...selectedAnswers].every(answer => correctAnswers.has(answer))) {
+                var hazard_header = "Correct: These are all Hazards!";
+                var hazard_sub_header = "There are multiple hazards on this table!";
+                var hazard_desc = "Multiple flammable materials have been stored in close proximity to a lighter, creating a fire hazard. Additionally, there is used PPE on the table and the table itself is blocking an exit.";
+                var key_points = "Ensure all exits are accessible in the event of an emergency.Store flammable materials in their designated location.Do not bring candles/lighters from home.Discard PPE immediately after use";
+                
+                document.getElementById('content').innerHTML = `
+                    <div class="hazard_header" style="padding: 0; margin: 0; width: 100%;">
+                        <h1 style="
+                            font-size: calc(1.5vw + 1rem); 
+                            white-space: nowrap; 
+                            background-color: rgba(255, 255, 255, 0.1);
+                            padding: 0.75rem;
+                            text-align: center;
+                            margin: 0;
+                        ">⚠️ Correct: These are all <span style="color:orange"><u>Hazards!</u></span> ⚠️</h1>
+                    </div>
+                    <div class="hazard_info" style="
+                        border-radius: 8px; 
+                        margin: 0;
+                        text-align: left;
+                        padding: 0px 20px;
+                    ">
+                        <h3 style="
+                            font-size: calc(1vw + 1rem); 
+                            color: #F7F7F7;
+                            margin-bottom: 10px;
+                        ">${hazard_sub_header}</h3>
+                        <blockquote style="
+                            font-size: calc(1vw + 0.6rem); 
+                            color: #F7F7F7; 
+                            line-height: 1.4em;
+                            margin-left: 2em;
+                            margin-bottom: 0;
+                        ">${hazard_desc}</blockquote>
+                    </div>
+                    <div class="key_points" style="margin: 0; padding: 0px 20px; text-align: left;">
+                        <h3 style="
+                            font-size: calc(1vw + 1rem); 
+                            color: #F7F7F7;
+                            margin-bottom: 10px;
+                        ">Safety Tips:</h3>
+                        <ul style="list-style-type: disc; margin-left: 0; font-size: calc(1vw + 0.6rem);">
+                            ${makeKeyPointsList(key_points)}
+                        </ul>
+                    </div>
+                `;
+            } else {
+                alert("Please select all correct answers!");
+            }
+        }
+    </script>
+
+</body>
+</html>
