@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiple Choice Question</title> 
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap');
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: 'Metropolis', sans-serif;
+            background-color: #000000;
+            color: #F7F7F7;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #content {
+            width: 100%;
+            max-width: 800px;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .question-container {
+            text-align: center;
+            margin-bottom: 1rem;
+            padding: 20px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            font-family: 'Metropolis', sans-serif;
+            padding: 0.5rem 1rem;
+            font-size: calc(1vw + 0.7rem); /* Adjust font size to be more responsive */
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #843910;
+            color: white;
+        }
+
+        footer {
+            background-color: #843910;
+            color: #F7F7F7;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.5rem 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: rgba(224, 189, 153, 1);
+            font-weight: 700;
+        }
+
+        footer img {
+            width: 1rem;
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div class="question-container">
+            <h2>Is there a hazard present around the sink?</h2>
+            <div class="button-grid">
+                <button onclick="checkAnswer('Improper drying rack', this)">Improper drying rack</button>
+                <button onclick="checkAnswer('Confusing bottle near sink', this)">Confusing bottle near sink</button>
+                <button onclick="checkAnswer('Water leakage', this)">Water leakage</button>
+                <button onclick="checkAnswer('No hazard', this)">No hazard</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        See more at  
+        <a href="https://pnnl.sharepoint.com/sites/Safety/SitePages/We-are-Safe.aspx?q_scout=WE%20are%20Safe">
+            <img class="filetype-icon" style="filter: invert(90%) sepia(7%) saturate(2015%) hue-rotate(327deg) brightness(91%) contrast(92%);" src="https://api.pnl.gov/it/theme-core/v1/svg-icons/link?iconDisplay=solid" alt="pdf-icon">
+            WE are Safe
+        </a>
+    </footer>
+
+    <script>
+        function makeKeyPointsList(str) {
+            var sentences = str.split(".");
+            var liElementsHTML = sentences.map(sentence => {
+                if (sentence.trim() !== '') {
+                    return "<li>" + sentence.trim() + "</li>";
+                }
+            });
+
+            return liElementsHTML.join("");
+        }
+
+        function makeHDILink(hdi_link) {
+            if(hdi_link === "") {
+                return "";
+            }
+            var btn = `
+            <div class="button-row">
+                <div class="file-links">
+                  <a class="hdi-link" href=${hdi_link}>
+                    <img class="filetype-icon" src="https://api.pnl.gov/it/theme-core/v1/svg-icons/link?iconDisplay=outline" alt="pdf-icon" />
+                    View Associated HDI Page
+                  </a>
+                </div>
+              </div>
+            `;
+            return btn;            
+        }
+          
+        function checkAnswer(answer, button) {
+        button.style.backgroundColor = "red";
+        if (answer === 'Confusing bottle near sink') {
+            var hazard_header = "Correct: This is a Hazard!";
+            var hazard_sub_header = "A confusing bottle is next to the sink!";
+            var hazard_desc = "A bottle of acid and another labeled 'Not hand soap' are placed next to a sink, potentially leading to confusion or misuse. The similarity in bottle appearance may result in accidental exposure to harmful substances.";
+            var key_points = "Clearly label chemical containers with large, distinct labels to avoid misidentification.Store hazardous chemicals away from sinks and areas commonly used for hygiene purposes.Educate personnel on correct identification and storage of chemicals, emphasizing the dangers of improper use.";
+            var hdi_link = "https://scout.pnnl.gov/answer/205/how-do-i-hdi/";
+
+            document.getElementById('content').innerHTML = `
+                <div class="hazard_header" style="padding: 0; margin: 0; width: 100%;">
+                    <h1 style="
+                        font-size: calc(1.5vw + 1rem); 
+                        white-space: nowrap; 
+                        background-color: rgba(255, 255, 255, 0.1);
+                        padding: 0.75rem;
+                        text-align: center;
+                        margin: 0;
+                    ">⚠️ Correct: This is a <span style="color:orange"><u>Hazard!</u></span> ⚠️</h1>
+                </div>
+                <div class="hazard_info" style="
+                    border-radius: 8px; 
+                    margin: 0;
+                    text-align: left;
+                    padding: 0px 20px;
+                ">
+                    <h3 style="
+                        font-size: calc(1vw + 1rem); 
+                        color: #F7F7F7;
+                        margin-bottom: 10px;
+                    ">${hazard_sub_header}</h3>
+                    <blockquote style="
+                        font-size: calc(1vw + 0.6rem); 
+                        color: #F7F7F7; 
+                        line-height: 1.4em;
+                        margin-left: 2em;
+                        margin-bottom: 0;
+                    ">${hazard_desc}</blockquote>
+                </div>
+                <div class="key_points" style="margin: 0; padding: 0px 20px; text-align: left;">
+                    <h3 style="
+                        font-size: calc(1vw + 1rem); 
+                        color: #F7F7F7;
+                        margin-bottom: 10px;
+                    ">Safety Tips:</h3>
+                    <ul style="list-style-type: disc; margin-left: 0; font-size: calc(1vw + 0.6rem);">
+                        ${makeKeyPointsList(key_points)}
+                    </ul>
+                </div>
+            `;
+        } else {
+            alert("Try Again!");
+        }
+    }
+    </script>
+
+</body>
+</html>
