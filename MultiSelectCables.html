@@ -160,9 +160,9 @@
         function checkAnswers() {
             if (selectedAnswers.size === correctAnswers.size && [...selectedAnswers].every(answer => correctAnswers.has(answer))) {
                 var hazard_header = "Correct: These are Hazards!";
-                var hazard_sub_header = "There are multiple overhanging boxes and PPE in the bookshelf!";
-                var hazard_desc = "Overhanging boxes are at risk of falling or catching on people passing by. Office shelves should not be used to store PPE, as they pose contamination concerns.";
-                var key_points = "Store PPE in its designated locations.Ensure there are no objects sticking out from bookshelves to reduce the risk of falling objects";
+                var hazard_sub_header = "Cords are crossing walkways and a power strip is daisy-chained!";
+                var hazard_desc = "Keep walkways clear of cables to prevent tripping hazards. Power strips should never be daisy-chained, this is a major electrical/fire hazard!";
+                var key_points = "Never daisy-chain power strips.Find alternative workstations with accessible outlets to avoid cables crossing walkways";
                 
                 document.getElementById('content').innerHTML = `
                     <div class="hazard_header" style="padding: 0; margin: 0; width: 100%;">
