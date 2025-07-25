@@ -99,7 +99,7 @@
             <h2>Identify all hazards found near the milling machine:</h2>
             <div class="button-grid">
                 <button onclick="toggleSelection(this)" data-answer="Food left on equipment">Food left on equipment</button>
-                <button onclick="toggleSelection(this)" data-answer="Missing chip shield">Missing chip shield</button>
+                <button onclick="toggleSelection(this)" data-answer="Missing chip guard">Missing chip guard</button>
                 <button onclick="toggleSelection(this)" data-answer="Equipment left running">Chemicals left on equipment</button>
                 <button onclick="toggleSelection(this)" data-answer="Poor housekeeping">Poor housekeeping</button>
             </div>
@@ -115,7 +115,7 @@
     </footer>
 
     <script>
-        const correctAnswers = new Set(["Food left on equipment", "Missing chip shield", "Poor housekeeping"]);
+        const correctAnswers = new Set(["Food left on equipment", "Missing chip guard", "Poor housekeeping"]);
         const selectedAnswers = new Set();
 
         function toggleSelection(button) {
@@ -160,9 +160,9 @@
         function checkAnswers() {
             if (selectedAnswers.size === correctAnswers.size && [...selectedAnswers].every(answer => correctAnswers.has(answer))) {
                 var hazard_header = "Correct: These are Hazards!";
-                var hazard_sub_header = "Poor housekeeping, missing chip shield, and food on the equipment!";
-                var hazard_desc = "A chip shield should be used to protect the user from flying debris and the dropped shavings should be regularly cleaned to mitigate fire risk. Never leave food on equipment, as this poses a great risk for contamination or spillages that could damage the equipment.";
-                var key_points = "Keep food away from equipment.Clean shavings after use to prevent debris from building up.Always use a chip shield and proper protective equipment";
+                var hazard_sub_header = "Poor housekeeping, missing chip guard, and food on the equipment!";
+                var hazard_desc = "A chip guard should be used to protect the user from flying debris and the dropped shavings should be regularly cleaned to mitigate fire risk. Never leave food on equipment, as this poses a great risk for contamination or spillages that could damage the equipment.";
+                var key_points = "Keep food away from equipment.Clean shavings after use to prevent debris from building up.Always use a chip guard and proper protective equipment";
                 
                 document.getElementById('content').innerHTML = `
                     <div class="hazard_header" style="padding: 0; margin: 0; width: 100%;">
