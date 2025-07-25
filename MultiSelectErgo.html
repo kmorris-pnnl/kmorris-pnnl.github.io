@@ -103,7 +103,7 @@
                 <button onclick="toggleSelection(this)" data-answer="Ergonomics are important to a healthy, productive work environment">Ergonomics are important to a healthy, productive work environment</button>
                 <button onclick="toggleSelection(this)" data-answer="This chair meets ergonomic standards">This chair meets ergonomic standards</button>
             </div>
-            <button class="check-answer-btn" onclick="checkAnswers()">Check Answers</button>
+            <button class="check-answer-btn" onclick="clearIncorrectHighlighting(); checkAnswers()">Check Answers</button>
         </div>
     </div>
     <footer>
@@ -119,6 +119,9 @@
         const selectedAnswers = new Set();
 
         function toggleSelection(button) {
+            // Clear any red highlighting when user clicks
+            clearIncorrectHighlighting();
+            
             const answer = button.getAttribute('data-answer');
             if (selectedAnswers.has(answer)) {
                 selectedAnswers.delete(answer);
@@ -127,6 +130,30 @@
                 selectedAnswers.add(answer);
                 button.style.backgroundColor = '#843910';
             }
+        }
+
+        function clearIncorrectHighlighting() {
+            const buttons = document.querySelectorAll('button[data-answer]');
+            buttons.forEach(button => {
+                if (button.style.backgroundColor === 'red') {
+                    const answer = button.getAttribute('data-answer');
+                    if (selectedAnswers.has(answer)) {
+                        button.style.backgroundColor = '#843910';
+                    } else {
+                        button.style.backgroundColor = '#f0f0f0';
+                    }
+                }
+            });
+        }
+
+        function highlightIncorrectSelections() {
+            const buttons = document.querySelectorAll('button[data-answer]');
+            buttons.forEach(button => {
+                const answer = button.getAttribute('data-answer');
+                if (selectedAnswers.has(answer)) {
+                    button.style.backgroundColor = 'red';
+                }
+            });
         }
 
         function makeKeyPointsList(str) {
@@ -206,6 +233,8 @@
                 `;
             } else {
                 alert("Please select all correct answers!");
+                // Highlight incorrect selections in red after the popup
+                highlightIncorrectSelections();
             }
         }
     </script>
