@@ -100,7 +100,7 @@
             <div class="button-grid">
                 <button onclick="toggleSelection(this)" data-answer="Shelves are too full">Shelves are too full</button>
                 <button onclick="toggleSelection(this)" data-answer="Overhanging boxes">Overhanging box</button>
-                <button onclick="toggleSelection(this)" data-answer="PPE on shelf">PPE on shelf</button>
+                <button onclick="toggleSelection(this)" data-answer="PPE on shelf">Inadequate PPE storage</button>
                 <button onclick="toggleSelection(this)" data-answer="Poor organization">Poor organization</button>
             </div>
             <button class="check-answer-btn" onclick="clearIncorrectHighlighting(); checkAnswers()">Check Answers</button>
@@ -188,7 +188,7 @@
             if (selectedAnswers.size === correctAnswers.size && [...selectedAnswers].every(answer => correctAnswers.has(answer))) {
                 var hazard_header = "Correct: These are Hazards!";
                 var hazard_sub_header = "There are multiple overhanging boxes and PPE in the bookshelf!";
-                var hazard_desc = "Overhanging boxes are at risk of falling or catching on people passing by. Office shelves should not be used to store PPE, as they pose contamination concerns.";
+                var hazard_desc = "Overhanging boxes are at risk of falling or catching on people passing by. Additionally, general storage and care of PPE is necessary to ensure integrity.";
                 var key_points = "Store PPE in its designated locations.Ensure there are no objects sticking out from bookshelves to reduce the risk of falling objects";
                 
                 document.getElementById('content').innerHTML = `
